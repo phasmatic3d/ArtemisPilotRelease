@@ -1,0 +1,7 @@
+/*!
+ * 
+ *     /* Copyright (C) Phasmatic, PC - All Rights Reserved
+ *     * Unauthorized copying and use of files in this directory, via any medium is strictly prohibited
+ *     * Proprietary and confidential
+ *     * /
+ */
