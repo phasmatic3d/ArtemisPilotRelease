@@ -1,0 +1,58 @@
+<!doctype html><html><head><link rel="shortcut icon" href="#"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="stylesheet" href="css/common.css"><link rel="stylesheet" href="css/annotations.css"><title>Phasmatic Viewer</title><script defer="defer" src="https://phasmatic.com/viewer/dist/artemisviewer.js"></script></head><body><main><style>artemis-viewer {
+          width: 1024px;     
+          height: 768px;
+        }
+        .container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          height: 100%;
+          width: 100%;
+          /*outline: 1px solid blue;*/
+        }</style><div class="container"><artemis-viewer id="ph_id" customerid="anastasiosDev" alt="Converse Shoes" src="gltf/cube.glb" poster="posters/editor.webp" _env-image="gltf/neutral_brighter3.pha" env-intensity="1.0" env-image-blur="true" camera-enable-controls camera-min-orbit="auto, auto, 0.1m" camera-auto-rotate2 camera-auto-rotate-speed2="1,0" camera-interpolate camera-interpolate-duration="0.2" camera-interpolate-cycle="310,15,4.5" loading="eager" immersive2="XR" background-color3="#FFFFFF" background-image2="images/trailer-background.jpg" background-color="#f6eee3" pp-sharpen2="1.0" pp-vignette="0.5" pp-filmgrain="1.0" ui-fullscreen ground-shadow="1.1"></artemis-viewer></div><div style="display: flex; flex-direction: row; justify-content: center; align-items: center;"><button class="ui_buttons" id="animation_button">Animation</button> <button class="ui_buttons" id="variant_button">Variant</button> <button class="ui_buttons" id="visibity_button">Visibility</button></div></main><script type="module">const btn_animation = document.getElementById("animation_button");
+      const phasma_viewer = document.getElementById("ph_id");
+
+      let animation_index = 0;
+      
+      const objectIds = new Map();
+
+      // On Load
+      phasma_viewer.onLoadPromise().then(res => {
+        console.log("Loaded");
+
+        //phasma_viewer.addModel("Blue", "gltf/blue.glb").then(id => { objectIds.set("Blue", id)})
+        //phasma_viewer.addModel("Green", "gltf/green.glb").then(id => { objectIds.set("Green", id)})
+      });
+
+      btn_animation.onclick = () => {
+        const animations = phasma_viewer.availableAnimations();
+        const anim = new Set(animations.map(e => e.name));
+        const animations2 = Array.from(anim);
+        animation_index = animation_index + 1;
+        animation_index = animation_index % animations2.length;
+        console.log("Play Animation", animations2[animation_index]);
+        phasma_viewer.triggerAnimation(animations2[animation_index]);
+      };
+
+      let variant_index = 0;
+      const btn_variant = document.getElementById("variant_button");
+      btn_variant.onclick = () => {
+        const variants = phasma_viewer.availableVariants();
+        if(variants.length > 0)
+        {
+          variant_index = variant_index + 1;
+          variant_index = variant_index % variants.length;
+          phasma_viewer.triggerVariant(variants[variant_index]);
+        }
+      };
+
+      let visibity = true;
+      const btn_visibility = document.getElementById("visibity_button");
+      btn_visibility.onclick = () => {
+        phasma_viewer.triggerVisibility("DRAIN_PAN_TOP_1", visibity);
+        phasma_viewer.triggerVisibility("DRAIN_PAN_TOP_2", !visibity);
+
+        phasma_viewer.triggerVisibility("DRAIN_PAN_BOTTOM_1", visibity);
+        phasma_viewer.triggerVisibility("DRAIN_PAN_BOTTOM_2", !visibity);
+        visibity = !visibity;
+      };</script></body></html>
